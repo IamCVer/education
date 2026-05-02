@@ -1,0 +1,143 @@
+/* 管理后台页面样式 */
+.admin-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem 0;
+}
+
+.admin-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.admin-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.admin-header h1 {
+  color: white;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.admin-header p {
+  color: rgba(255,255,255,0.8);
+  font-size: 1.1rem;
+}
+
+.btn-admin {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-admin:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.status-indicator {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.status-success { background-color: #28a745; }
+.status-error { background-color: #dc3545; }
+.status-warning { background-color: #ffc107; }
+.status-info { background-color: #17a2b8; }
+
+.log-container {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1rem;
+  max-height: 300px;
+  overflow-y: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+}
+
+.nav-tabs .nav-link {
+  border: none;
+  color: #6c757d;
+  font-weight: 600;
+}
+
+.nav-tabs .nav-link.active {
+  background: none;
+  color: #667eea;
+  border-bottom: 3px solid #667eea;
+}
+
+/* 进度条样式 */
+.progress {
+  height: 8px;
+  border-radius: 4px;
+  background-color: #e9ecef;
+  margin: 10px 0;
+}
+
+.progress-bar {
+  transition: width 0.3s ease;
+}
+
+/* 系统信息卡片 */
+.system-info-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.system-info-card h5 {
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.system-info-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.system-info-item:last-child {
+  border-bottom: none;
+}
+
+/* 日志条目样式 */
+.log-entry {
+  padding: 0.25rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.log-entry:last-child {
+  border-bottom: none;
+}
+
+.log-time {
+  color: #6c757d;
+  font-size: 0.8rem;
+}
+
+.log-message {
+  margin-left: 0.5rem;
+}
+
+.log-success { color: #28a745; }
+.log-error { color: #dc3545; }
+.log-warning { color: #ffc107; }
+.log-info { color: #17a2b8; }

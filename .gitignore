@@ -1,0 +1,103 @@
+# 字节码文件
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 虚拟环境
+.venv
+venv/
+env/
+
+# IDE配置文件
+.idea/
+.vscode/
+
+# 敏感信息文件
+.env
+.env.*
+!.env.example
+
+# Docker/Python 缓存
+.pytest_cache/
+.mypy_cache/
+build/
+dist/
+*.egg-info/
+coverage/
+htmlcov/
+
+# 前端依赖、构建产物和包管理缓存
+node_modules/
+.next/
+out/
+.nuxt/
+.svelte-kit/
+.vite/
+.parcel-cache/
+.npm/
+.pnpm-store/
+*.tsbuildinfo
+
+# 模型文件和缓存（只忽略根目录或明确缓存目录，避免误伤 app/models 等源码）
+/models/
+/model_cache/
+/chattts_models/
+/app/tts_engine/
+/.cache/
+/.huggingface/
+*.pt
+*.pth
+*.safetensors
+*.ckpt
+*.onnx
+*.gguf
+*.bin
+*.h5
+*.tflite
+*.mlmodel
+
+# 本地生成的大体积媒体文件
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.wav
+*.mp3
+*.flac
+*.m4a
+*.aac
+
+# 本地下载包/压缩包
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+*.rar
+
+# 日志文件
+*.log
+logs/
+*logs.txt
+*_logs.txt
+
+# 本地开发/调试生成物
+/.superpowers/
+/test_outputs/
+/teacher/uploads/*
+!/teacher/uploads/.gitkeep
+/app/static/vue_app/src/views/*.backup
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# 临时文件
+*.tmp
+*.temp
+.temp/

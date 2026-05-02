@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能问答系统</title>
+    <!-- 使用机器人图标作为favicon，符合智能问答系统主题 -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 512' fill='%23007bff'%3E%3Cpath d='M320 0c17.7 0 32 14.3 32 32V96H472c39.8 0 72 32.2 72 72V440c0 39.8-32.2 72-72 72H168c-39.8 0-72-32.2-72-72V168c0-39.8 32.2-72 72-72H288V32c0-17.7 14.3-32 32-32zM208 384c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H208zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H304zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H400zM264 256a40 40 0 1 0-80 0 40 40 0 1 0 80 0zm152 40a40 40 0 1 0 0-80 40 40 0 1 0 0 80z'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/pages/chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+</head>
+<body>
+    <div class="chat-container">
+        <!-- 左侧边栏 -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                    <span>智能问答</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <div class="new-chat">
+                <button class="new-chat-btn" id="newChatBtn">
+                    <i class="fas fa-plus"></i>
+                    开启新对话
+                </button>
+            </div>
+
+            <div class="conversation-history">
+                <div class="history-section">
+                    <h3>今天</h3>
+                    <div class="conversation-item active" data-id="current">
+                        <span class="conversation-title">新对话</span>
+                        <button class="conversation-menu">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="history-section">
+                    <h3>历史对话</h3>
+                    <div id="historyList">
+                        <!-- 历史对话将通过JavaScript动态加载 -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <ul class="list-group list-group-flush sidebar-links">
+                    <li class="list-group-item list-group-item-action d-flex align-items-center gap-2" onclick="openGraphVisualizer()">
+                        <i class="fas fa-project-diagram text-primary"></i>
+                        <span>知识图谱可视化</span>
+                    </li>
+                    <li class="list-group-item list-group-item-action d-flex align-items-center gap-2" onclick="openAIVoiceChat()">
+                        <i class="fas fa-brain text-info"></i>
+                        <span>心灵助手</span>
+                    </li>
+                    <li class="list-group-item list-group-item-action d-flex align-items-center gap-2" onclick="window.location.href='/users.html'">
+                        <i class="fas fa-user text-secondary"></i>
+                        <span>个人信息</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <div class="chat-header">
+                <h1 id="conversationTitle">新对话</h1>
+                <div class="header-actions">
+                    <!-- <button class="action-btn" id="aiVoiceChatBtn" title="AI语音对话" onclick="openAIVoiceChat()">
+                        <i class="fas fa-microphone"></i>
+                    </button> -->
+                    <button class="action-btn" id="copyBtn" title="复制对话">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <!-- 欢迎消息 -->
+                <div class="message ai-message">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-text">
+                            <p>你好！我是基于知识图谱的智能问答助手。我可以帮助你：</p>
+                            <ul>
+                                <li>回答关于知识图谱中实体的问题</li>
+                                <li>分析实体之间的关系</li>
+                                <li>提供路径规划和推荐</li>
+                                <li>进行概念解释和比较</li>
+                            </ul>
+                            <p>请告诉我你想了解什么？</p>
+                        </div>
+                        <div class="message-actions">
+                            <button class="action-btn" title="复制">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <button class="action-btn" title="点赞">
+                                <i class="fas fa-thumbs-up"></i>
+                            </button>
+                            <button class="action-btn" title="点踩">
+                                <i class="fas fa-thumbs-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input-container">
+                <div class="input-wrapper">
+                    <textarea 
+                        id="messageInput" 
+                        placeholder="输入你的问题..." 
+                        rows="1"
+                        maxlength="2000"
+                    ></textarea>
+                    <div class="input-actions">
+                        <button class="send-btn" id="sendBtn" disabled>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="input-footer">
+                    <span class="char-count">
+                        <span id="charCount">0</span>/2000
+                    </span>
+                    <span class="disclaimer">
+                        内容由AI生成，请仔细甄别
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载动画 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>正在思考中...</p>
+        </div>
+    </div>
+
+    <!-- 模态框 -->
+    <div class="modal" id="conversationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>对话管理</h3>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-option" id="renameOption">
+                    <i class="fas fa-edit"></i>
+                    重命名对话
+                </div>
+                <div class="modal-option" id="deleteOption">
+                    <i class="fas fa-trash"></i>
+                    删除对话
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript files-->
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="/assets/vendor/bootstrap/bootstrap.min.js"></script>
+    
+    <!-- 核心文件 -->
+    <script src="/assets/js/core/config.js"></script>
+    <script src="/assets/js/core/utils.js"></script>
+    
+    <!-- 服务文件 -->
+    <script src="/assets/js/services/api.js"></script>
+    <script src="/assets/js/services/auth.service.js"></script>
+    <script src="/assets/js/services/qa.service.js"></script>
+    
+    <!-- 页面特定脚本 -->
+    <script src="/assets/js/pages/dashboard/chat.js?v=20240928006"></script>
+    <script>
+        function openGraphVisualizer() {
+            const token = localStorage.getItem('userToken');
+            if (token) {
+                // 通过URL参数传递token到GraphRAG Visualizer
+                window.open(`http://localhost:3000?token=${encodeURIComponent(token)}`, '_blank');
+            } else {
+                window.Utils.showAlert('error', '请先登录');
+            }
+        }
+        
+        function openAIVoiceChat() {
+            // 检查用户是否已登录
+            const token = localStorage.getItem('userToken') || localStorage.getItem('access_token');
+            if (token) {
+                // 打开新窗口
+                const chatWindow = window.open('http://localhost:3001', '_blank');
+                
+                // 等待新窗口加载完成后设置token
+                setTimeout(() => {
+                    try {
+                        // 尝试在新窗口中设置token
+                        if (chatWindow && !chatWindow.closed) {
+                            chatWindow.postMessage({
+                                type: 'SET_TOKEN',
+                                token: token
+                            }, 'http://localhost:3001');
+                        }
+                    } catch (e) {
+                        console.error('无法设置token:', e);
+                    }
+                }, 1000);
+                
+                // 显示提示
+                if (window.Utils) {
+                    window.Utils.showSuccess('正在打开ChatVRM，请稍候...');
+                }
+            } else {
+                if (window.Utils) {
+                    window.Utils.showError('请先登录后再使用AI语音对话功能');
+                } else {
+                    alert('请先登录后再使用AI语音对话功能');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

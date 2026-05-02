@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员后台 - 智能问答系统</title>
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/pages/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <div class="container">
+            <!-- 页面头部 -->
+            <div class="admin-header">
+                <h1><i class="fas fa-cogs"></i> 管理员后台</h1>
+                <p>智能学业知识问答系统管理控制台</p>
+            </div>
+
+            <!-- 导航标签 -->
+            <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="dashboard-tab" data-toggle="tab" href="#dashboard" role="tab">
+                        <i class="fas fa-tachometer-alt"></i> 仪表板
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="knowledge-tab" data-toggle="tab" href="#knowledge" role="tab">
+                        <i class="fas fa-brain"></i> 知识图谱
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="system-tab" data-toggle="tab" href="#system" role="tab">
+                        <i class="fas fa-server"></i> 系统管理
+                    </a>
+                </li>
+            </ul>
+
+            <!-- 标签内容 -->
+            <div class="tab-content" id="adminTabContent">
+                <!-- 仪表板 -->
+                <div class="tab-pane fade show active" id="dashboard" role="tabpanel">
+                    <div class="admin-card">
+                        <h3><i class="fas fa-chart-line"></i> 系统概览</h3>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="text-center">
+                                    <h4 class="text-primary">用户总数</h4>
+                                    <h2 id="totalUsers">-</h2>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center">
+                                    <h4 class="text-success">今日问答</h4>
+                                    <h2 id="todayQuestions">-</h2>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center">
+                                    <h4 class="text-info">知识节点</h4>
+                                    <h2 id="knowledgeNodes">-</h2>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center">
+                                    <h4 class="text-warning">系统状态</h4>
+                                    <h2 id="systemStatus">正常</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 知识图谱管理 -->
+                <div class="tab-pane fade" id="knowledge" role="tabpanel">
+                    <div class="admin-card">
+                        <h3><i class="fas fa-brain"></i> 知识图谱管理</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">索引管理</h5>
+                                        <p class="card-text">将Neo4j图数据库中的知识向量化并存入Qdrant，用于智能问答检索。</p>
+                                        <button class="btn btn-admin" id="indexBtn">
+                                            <i class="fas fa-sync-alt"></i> 触发知识图谱索引
+                                        </button>
+                                        <div class="mt-3">
+                                            <small class="text-muted">上次索引时间: <span id="lastIndexTime">未执行</span></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">索引状态</h5>
+                                        <div id="indexStatus">
+                                            <span class="status-indicator status-info"></span>
+                                            <span>等待索引...</span>
+                                        </div>
+                                        <div class="mt-3">
+                                            <div class="progress">
+                                                <div class="progress-bar" id="indexProgress" role="progressbar" style="width: 0%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <h5>索引日志</h5>
+                            <div class="log-container" id="indexLog">
+                                <div class="text-muted">等待开始索引...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 系统管理 -->
+                <div class="tab-pane fade" id="system" role="tabpanel">
+                    <div class="admin-card">
+                        <h3><i class="fas fa-server"></i> 系统管理</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">系统信息</h5>
+                                        <ul class="list-unstyled">
+                                            <li><strong>API版本:</strong> v1.0</li>
+                                            <li><strong>后端地址:</strong> <span id="apiUrl">http://localhost:8000</span></li>
+                                            <li><strong>WebSocket地址:</strong> <span id="wsUrl">ws://localhost:8000</span></li>
+                                            <li><strong>当前用户:</strong> <span id="currentUser">-</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">快速操作</h5>
+                                        <button class="btn btn-outline-primary btn-sm mb-2" onclick="window.location.href='/chat'">
+                                            <i class="fas fa-comments"></i> 进入问答系统
+                                        </button><br>
+                                        <button class="btn btn-outline-secondary btn-sm mb-2" onclick="window.location.href='/users'">
+                                            <i class="fas fa-users"></i> 用户管理
+                                        </button><br>
+                                        <button class="btn btn-outline-danger btn-sm" onclick="logout()">
+                                            <i class="fas fa-sign-out-alt"></i> 退出登录
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="/assets/vendor/bootstrap/bootstrap.min.js"></script>
+    
+    <!-- 核心文件 -->
+    <script src="/assets/js/core/config.js"></script>
+    <script src="/assets/js/core/utils.js"></script>
+    
+    <!-- 服务文件 -->
+    <script src="/assets/js/services/api.js"></script>
+    <script src="/assets/js/services/auth.service.js"></script>
+    <script src="/assets/js/services/admin.service.js"></script>
+    
+    <!-- 页面特定脚本 -->
+    <script src="/assets/js/pages/admin/admin.js"></script>
+    <script>
+        // 页面初始化
+        $(document).ready(function() {
+            // 页面加载完成后的初始化逻辑
+            console.log('管理后台页面已加载');
+        });
+    </script>
+</body>
+</html>

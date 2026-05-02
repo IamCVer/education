@@ -1,0 +1,466 @@
+services:
+  backend:
+    build:
+      context: .
+    image: education-app-image
+    container_name: my_project_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/code/app
+      - ./teacher:/code/teacher
+      - ./models:/code/models
+      - media_files:/code/media
+      - /var/run/docker.sock:/var/run/docker.sock  # 挂载 Docker socket
+    environment:
+      - PYTHONPATH=/code
+      - MODEL_PATH=/code/models
+      - DATABASE_URL=mysql://root:wcy666666@db_mysql:3306/my_database?charset=utf8mb4
+      - NEO4J_URI=bolt://db_neo4j:7687
+      - NEO4J_USER=neo4j
+      - NEO4J_PASSWORD=wcy666666
+      - REDIS_HOST=redis
+      - SECRET_KEY=wcy666666
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+      - QWEN_API_KEY=${QWEN_API_KEY:-}
+      - QWEN_TURBO_MODEL_NAME=qwen-turbo
+      - QWEN_MAX_MODEL_NAME=qwen-max
+      - QWEN_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
+      - DASHSCOPE_API_KEY=${DASHSCOPE_API_KEY:-}
+      - COSYVOICE_MODEL=cosyvoice-v2
+      - COSYVOICE_VOICE_MALE=longxiaochun_v2
+      - COSYVOICE_VOICE_FEMALE=longxiaoxuan_v2
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+      - DISABLE_SEMANTIC_CACHE=1
+      - CHATTTS_SERVICE_URL=http://chattts:9000
+      - HF_HOME=/code/models/huggingface_cache
+      - HF_ENDPOINT=https://hf-mirror.com
+      - TRANSFORMERS_CACHE=/code/models/huggingface_cache
+      - SENTENCE_TRANSFORMERS_HOME=/code/models/embeddings
+      - TRANSFORMERS_OFFLINE=1
+      - HF_HUB_OFFLINE=1
+      - MATTERMOST_URL=${MATTERMOST_URL:-mattermost}
+      - MATTERMOST_PORT=${MATTERMOST_PORT:-8065}
+      - MATTERMOST_USERNAME=${MATTERMOST_USERNAME:-admin}
+      - MATTERMOST_PASSWORD=${MATTERMOST_PASSWORD:-admin123}
+      - MATTERMOST_TOKEN=${MATTERMOST_TOKEN:-}
+      - MATTERMOST_PERSONAL_ACCESS_TOKEN=${MATTERMOST_PERSONAL_ACCESS_TOKEN:-}
+      - MATTERMOST_BOT_TOKEN=${MATTERMOST_BOT_TOKEN:-}
+      # 视频教学功能配置
+      - MEDIACMS_URL=http://mediacms:80
+      - MEDIACMS_API_URL=http://mediacms:80/api/v1
+      - MEDIACMS_ADMIN_TOKEN=${MEDIACMS_ADMIN_TOKEN:-}
+      - OSS_ACCESS_KEY_ID=${OSS_ACCESS_KEY_ID:-}
+      - OSS_ACCESS_KEY_SECRET=${OSS_ACCESS_KEY_SECRET:-}
+      - OSS_ENDPOINT=${OSS_ENDPOINT:-https://oss-cn-hangzhou.aliyuncs.com}
+      - OSS_BUCKET_NAME=${OSS_BUCKET_NAME:-education-videos}
+      - XFYUN_PPT_APP_ID=${XFYUN_PPT_APP_ID:-}
+      - XFYUN_PPT_API_SECRET=${XFYUN_PPT_API_SECRET:-}
+      - XFYUN_PPT_BASE_URL=${XFYUN_PPT_BASE_URL:-}
+    depends_on:
+      db_mysql:
+        condition: service_healthy
+      db_neo4j:
+        condition: service_started
+      redis:
+        condition: service_started
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
+      interval: 30s
+      timeout: 120s
+      retries: 10
+      start_period: 120s
+    networks:
+      - my_project_net
+
+  worker:
+    build:
+      context: .
+    image: education-app-image
+    container_name: my_project_worker
+    volumes:
+      - ./app:/code/app
+      - ./models:/code/models
+      - media_files:/code/media
+    environment:
+      - PYTHONPATH=/code
+      - MODEL_PATH=/code/models
+      - DATABASE_URL=mysql://root:wcy666666@db_mysql:3306/my_database?charset=utf8mb4
+      - NEO4J_URI=bolt://db_neo4j:7687
+      - NEO4J_USER=neo4j
+      - NEO4J_PASSWORD=wcy666666
+      - REDIS_HOST=redis
+      - SECRET_KEY=wcy666666
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+      - QWEN_API_KEY=${QWEN_API_KEY:-}
+      - QWEN_TURBO_MODEL_NAME=qwen-turbo
+      - QWEN_MAX_MODEL_NAME=qwen-max
+      - QWEN_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
+      - DASHSCOPE_API_KEY=${DASHSCOPE_API_KEY:-}
+      - COSYVOICE_MODEL=cosyvoice-v2
+      - COSYVOICE_VOICE_MALE=longxiaochun_v2
+      - COSYVOICE_VOICE_FEMALE=longxiaoxuan_v2
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+      - DISABLE_SEMANTIC_CACHE=1
+      - CHATTTS_SERVICE_URL=http://chattts:9000
+      - HF_HOME=/code/models/huggingface_cache
+      - HF_ENDPOINT=https://hf-mirror.com
+      - TRANSFORMERS_CACHE=/code/models/huggingface_cache
+      - SENTENCE_TRANSFORMERS_HOME=/code/models/embeddings
+      - TRANSFORMERS_OFFLINE=1
+      - HF_HUB_OFFLINE=1
+      # 视频教学功能配置
+      - MEDIACMS_URL=http://mediacms:80
+      - MEDIACMS_API_URL=http://mediacms:80/api/v1
+      - MEDIACMS_ADMIN_TOKEN=${MEDIACMS_ADMIN_TOKEN:-}
+      - OSS_ACCESS_KEY_ID=${OSS_ACCESS_KEY_ID:-}
+      - OSS_ACCESS_KEY_SECRET=${OSS_ACCESS_KEY_SECRET:-}
+      - OSS_ENDPOINT=${OSS_ENDPOINT:-https://oss-cn-hangzhou.aliyuncs.com}
+      - OSS_BUCKET_NAME=${OSS_BUCKET_NAME:-education-videos}
+    depends_on:
+      redis:
+        condition: service_started
+      db_mysql:
+        condition: service_healthy
+      db_neo4j:
+        condition: service_started
+    command: arq app.workers.qa_worker.WorkerSettings
+    restart: unless-stopped
+    healthcheck:
+      disable: true
+    networks:
+      - my_project_net
+
+  qdrant:
+    image: qdrant/qdrant:v1.9.2
+    container_name: my_project_qdrant
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks:
+      - my_project_net
+
+  db_mysql:
+    image: mysql:8.0
+    container_name: my_project_mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=wcy666666
+      - MYSQL_DATABASE=my_database
+      # vvvvvvvvvvvv 唯一新增的部分 vvvvvvvvvvvv
+      - LANG=C.UTF-8
+      - MYSQL_INITDB_CHARSET=utf8mb4
+      - MYSQL_INITDB_COLLATION=utf8mb4_unicode_ci
+      # ^^^^^^^^^^^^ 唯一新增的部分 ^^^^^^^^^^^^
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    restart: always
+    networks:
+      - my_project_net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  db_neo4j:
+    image: neo4j:5
+    container_name: my_project_neo4j
+    environment:
+      - NEO4J_AUTH=neo4j/wcy666666
+    volumes:
+      - neo4j_data:/data
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    restart: always
+    networks:
+      - my_project_net
+
+  redis:
+    image: redis:7-alpine
+    container_name: my_project_redis
+    restart: always
+    networks:
+      - my_project_net
+
+  adminer:
+    image: adminer
+    container_name: my_project_adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - my_project_net
+
+  graphrag-visualizer:
+    build:
+      context: ./graphrag-visualizer-main
+    image: graphrag-visualizer-image
+    container_name: my_project_graphrag_visualizer
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_BASE_URL=http://localhost:8000
+    depends_on:
+      backend:
+        condition: service_started
+    networks:
+      - my_project_net
+    restart: unless-stopped
+
+  chatvrm:
+    build:
+      context: ./ChatVRM-main
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
+        - NEXT_PUBLIC_DASHSCOPE_KEY=${NEXT_PUBLIC_DASHSCOPE_KEY:-}
+        - NEXT_PUBLIC_OPENROUTER_API_KEY=${NEXT_PUBLIC_OPENROUTER_API_KEY:-}
+        - NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+        - NEXT_PUBLIC_VOSK_SERVICE_URL=${NEXT_PUBLIC_VOSK_SERVICE_URL:-http://localhost:3002/transcribe}
+        - NEXT_PUBLIC_WS_URL=ws://localhost:8000
+        # 不设置 BASE_PATH，chatvrm 以根路径 / 运行，由 nginx 做路径剥离
+    image: chatvrm-image
+    container_name: my_project_chatvrm
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./models/vosk:/app/public/models
+      - ./ChatVRM-main/public/vrm:/app/public/vrm
+    environment:
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+      - PORT=3001
+    depends_on:
+      backend:
+        condition: service_started
+    networks:
+      - my_project_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3001/', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 40s
+
+  chattts:
+    build:
+      context: ./ChatTTS-main
+      dockerfile: Dockerfile
+    image: chattts:with-models
+    container_name: my_project_chattts
+    ports:
+      - "9000:9000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MODEL_PATH=/app/models
+      - HF_ENDPOINT=https://hf-mirror.com
+      - HF_HOME=/app/models/huggingface_cache
+      - TRANSFORMERS_CACHE=/app/models/huggingface_cache
+      - HF_HUB_CACHE=/app/models/huggingface_cache
+    volumes:
+      - ./ChatTTS-main/chattts_api.py:/app/chattts_api.py      # 只挂载 API 文件，方便开发调试
+      - ./ChatTTS-main/ChatTTS:/app/ChatTTS                     # 挂载 ChatTTS 源码
+      - ./models:/app/models
+    networks:
+      - my_project_net
+    entrypoint: ["/bin/bash", "/app/start.sh"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:9000/health')"]
+      interval: 60s
+      timeout: 10s
+      retries: 5
+      start_period: 600s
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./app/static/vue_app/Dockerfile
+    image: education-frontend-image
+    container_name: my_project_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_started
+    networks:
+      - my_project_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://127.0.0.1/ || exit 1"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  manage-system:
+    build:
+      context: ./manage-system
+      dockerfile: Dockerfile
+    image: manage-system-image
+    container_name: my_project_manage_system
+    ports:
+      - "8082:80"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      backend:
+        condition: service_started
+    networks:
+      - my_project_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://127.0.0.1/ || exit 1"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  # Mattermost PostgreSQL 数据库
+  mattermost_postgres:
+    image: postgres:14-alpine
+    container_name: my_project_mattermost_postgres
+    environment:
+      - POSTGRES_USER=mmuser
+      - POSTGRES_PASSWORD=mmuser_password
+      - POSTGRES_DB=mattermost
+    volumes:
+      - mattermost_postgres_data:/var/lib/postgresql/data
+    networks:
+      - my_project_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mmuser -d mattermost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Mattermost 聊天服务
+  mattermost:
+    image: mattermost/mattermost-team-edition:latest
+    platform: linux/amd64
+    container_name: my_project_mattermost
+    ports:
+      - "8065:8065"
+    environment:
+      - MM_SQLSETTINGS_DRIVERNAME=postgres
+      - MM_SQLSETTINGS_DATASOURCE=postgres://mmuser:mmuser_password@mattermost_postgres:5432/mattermost?sslmode=disable&connect_timeout=10
+      - MM_SERVICESETTINGS_SITEURL=http://localhost:8065
+      - MM_SERVICESETTINGS_ENABLEINCOMINGWEBHOOKS=true
+      - MM_SERVICESETTINGS_ENABLEOUTGOINGWEBHOOKS=true
+      - MM_SERVICESETTINGS_ENABLECUSTOMEMOJI=true
+      - MM_SERVICESETTINGS_ENABLEBOTACCOUNTCREATION=true
+      - MM_TEAMSETTINGS_ENABLEOPENSERVER=true
+    volumes:
+      - mattermost_config:/mattermost/config
+      - mattermost_data:/mattermost/data
+      - mattermost_logs:/mattermost/logs
+      - mattermost_plugins:/mattermost/plugins
+      - mattermost_client_plugins:/mattermost/client/plugins
+    depends_on:
+      mattermost_postgres:
+        condition: service_healthy
+    networks:
+      - my_project_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "/mattermost/bin/mattermost", "version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ============ MediaCMS 视频服务 ============
+  mediacms:
+    image: mediacms/mediacms:latest
+    platform: linux/amd64
+    container_name: my_project_mediacms
+    ports:
+      - "8889:80"
+    environment:
+      - ADMIN_USER=admin
+      - ADMIN_EMAIL=admin@example.com
+      - ADMIN_PASSWORD=${MEDIACMS_ADMIN_PASSWORD:-admin123}
+      - SECRET_KEY=${MEDIACMS_SECRET_KEY:-change-this-secret-key-in-production}
+      - POSTGRES_USER=mediacms
+      - POSTGRES_PASSWORD=mediacms123
+      - POSTGRES_DB=mediacms
+      - POSTGRES_HOST=mediacms_postgres
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      # 可选：使用阿里云OSS作为MediaCMS的存储后端
+      # - ENABLE_STORAGE_BACKEND=true
+      # - STORAGE_BACKEND=oss
+      # - OSS_ACCESS_KEY_ID=${OSS_ACCESS_KEY_ID}
+      # - OSS_ACCESS_KEY_SECRET=${OSS_ACCESS_KEY_SECRET}
+      # - OSS_ENDPOINT=${OSS_ENDPOINT}
+      # - OSS_BUCKET_NAME=${OSS_BUCKET_NAME}
+    volumes:
+      - mediacms_media:/home/mediacms.io/mediacms/media_files
+      - mediacms_static:/home/mediacms.io/mediacms/static
+    depends_on:
+      mediacms_postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - my_project_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1/').status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+
+  mediacms_postgres:
+    image: postgres:14-alpine
+    container_name: my_project_mediacms_postgres
+    environment:
+      - POSTGRES_USER=mediacms
+      - POSTGRES_PASSWORD=mediacms123
+      - POSTGRES_DB=mediacms
+    volumes:
+      - mediacms_postgres_data:/var/lib/postgresql/data
+    networks:
+      - my_project_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mediacms"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mysql_data:
+  neo4j_data:
+  qdrant_data: {}
+  media_files:
+  mattermost_postgres_data:
+  mattermost_config:
+  mattermost_data:
+  mattermost_logs:
+  mattermost_plugins:
+  mattermost_client_plugins:
+  # MediaCMS volumes
+  mediacms_media:
+  mediacms_static:
+  mediacms_postgres_data:
+networks:
+  my_project_net:
+    driver: bridge

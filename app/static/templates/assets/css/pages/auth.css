@@ -1,0 +1,95 @@
+/* 认证页面样式 */
+.alert {
+  display: none;
+  margin-top: 10px;
+}
+
+.loading {
+  display: none;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-material {
+  border: none;
+  border-bottom: 2px solid #ddd;
+  border-radius: 0;
+  padding: 0.75rem 0;
+  background: transparent;
+  transition: border-color 0.3s ease;
+}
+
+.input-material:focus {
+  border-color: #007bff;
+  box-shadow: none;
+  outline: none;
+}
+
+.btn-primary {
+  background: #007bff;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: #0056b3;
+  transform: translateY(-2px);
+}
+
+.logo h1 {
+  color: #007bff;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.info {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 3rem;
+  border-radius: 10px 0 0 10px;
+}
+
+.form-holder {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+/* 密码强度指示器 */
+.password-strength {
+  margin-top: 10px;
+}
+
+.strength-text {
+  font-size: 0.875rem;
+  margin-left: 10px;
+}
+
+/* 表单验证样式 */
+.is-valid {
+  border-color: #28a745 !important;
+}
+
+.is-invalid {
+  border-color: #dc3545 !important;
+}
+
+.valid-feedback,
+.invalid-feedback {
+  display: block;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.valid-feedback {
+  color: #28a745;
+}
+
+.invalid-feedback {
+  color: #dc3545;
+}

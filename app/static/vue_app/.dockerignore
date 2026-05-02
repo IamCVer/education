@@ -1,0 +1,48 @@
+# Node modules
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+dist
+dist-ssr
+
+# Editor directories and files
+.vscode
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files (will be copied explicitly)
+.env.local
+.env.*.local
+
+# Git
+.git
+.gitignore
+
+# Documentation (optional, can be removed to reduce image size)
+*.md
+!README.md
+
+# Test files
+coverage
+.nyc_output
+
+# Logs
+logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+

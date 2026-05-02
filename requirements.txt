@@ -1,0 +1,69 @@
+# requirements.txt (最终修正版)
+
+# Web 框架和服务器
+fastapi
+uvicorn[standard]
+websockets
+
+# Pydantic 核心及附加功能
+pydantic
+pydantic-settings
+pydantic[email]
+
+# 数据库和 ORM
+tortoise-orm==0.21.7
+aiomysql
+neo4j
+
+# 消息队列和缓存
+arq
+redis
+
+# 安全 & 认证
+passlib==1.7.4
+bcrypt==3.2.2
+python-jose[cryptography]
+python-multipart
+
+# HTTP 客户端
+httpx
+
+# --- AI 核心框架 (锁定版本并引入OpenAI兼容库) ---
+langchain==0.2.5
+langchain-core==0.2.8
+langgraph==0.1.1
+langchain-community==0.2.4
+langchain-openai==0.1.8  # <--- 新增的核心库
+
+# 向量数据库客户端
+qdrant-client~=1.9.0
+
+# 模型相关
+sentence-transformers
+torch
+
+# YAML解析
+pyyaml==6.0.1
+
+# --- 文本转语音 (Text-to-Speech) ---
+dashscope>=1.14.0  # 阿里云 DashScope SDK（包含 CosyVoice API）
+# piper-tts>=1.2.0  # Piper TTS引擎（已停用）
+soundfile>=0.12.1  # 音频文件读写
+numpy>=1.24.0  # 数值计算（音频数据处理）
+
+# --- 数据处理 ---
+pandas>=2.0.0  # 数据处理和分析
+pyarrow>=12.0.0  # Parquet 文件读写
+
+# --- WebSocket 和系统监控 ---
+python-socketio>=5.11.0  # Socket.IO 服务器
+psutil>=5.9.0  # 系统监控（CPU/内存）
+
+# --- 视频教学功能 ---
+oss2>=2.18.0  # 阿里云 OSS SDK（对象存储）
+
+# --- Teacher 智能备课模块 ---
+aiofiles
+pypdf
+python-docx
+python-pptx

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>rag+知识图谱本科智慧教学系统</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+      <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 512' fill='%23007bff'%3E%3Cpath d='M320 0c17.7 0 32 14.3 32 32V96H472c39.8 0 72 32.2 72 72V440c0 39.8-32.2 72-72 72H168c-39.8 0-72-32.2-72-72V168c0-39.8 32.2-72 72-72H288V32c0-17.7 14.3-32 32-32zM208 384c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H208zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H304zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H400zM264 256a40 40 0 1 0-80 0 40 40 0 1 0 80 0zm152 40a40 40 0 1 0 0-80 40 40 0 1 0 0 80z'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/pages/users.css">
+  </head>
+  <body>
+    <div class="page">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header">
+                <h4>rag+知识图谱本科智慧教学系统</h4>
+                <div class="float-right">
+                  <a href="/chat" class="btn btn-primary me-2">智能问答</a>
+                  <button class="btn btn-danger" id="logoutBtn">退出登录</button>
+                </div>
+              </div>
+              <div class="card-body">
+                <!-- 成功提示 -->
+                <div class="alert alert-success" id="successAlert" role="alert">
+                  <span id="successMessage"></span>
+                </div>
+
+                <!-- 错误提示 -->
+                <div class="alert alert-danger" id="errorAlert" role="alert">
+                  <span id="errorMessage"></span>
+                </div>
+
+                <!-- 当前用户信息 -->
+                <div class="user-info" id="currentUserInfo">
+                  <h5>当前用户信息</h5>
+                  <p id="userInfoText">加载中...</p>
+                </div>
+
+                <!-- 用户列表 -->
+                <div class="user-table">
+                  <h5>用户列表</h5>
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>用户名</th>
+                          <th>真实姓名</th>
+                          <th>邮箱</th>
+                          <th>创建时间</th>
+                          <th>操作</th>
+                        </tr>
+                      </thead>
+                      <tbody id="userTableBody">
+                        <tr>
+                          <td colspan="6" class="text-center">
+                            <span class="loading">加载中...</span>
+                            <span class="normal">暂无数据</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript files-->
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="/assets/vendor/jquery/jquery.cookie.min.js"></script>
+    <script src="/assets/vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="/assets/vendor/jquery-validation/jquery.validate.min.js"></script>
+    
+    <!-- 核心文件 -->
+    <script src="/assets/js/core/config.js"></script>
+    <script src="/assets/js/core/utils.js"></script>
+    
+    <!-- 服务文件 -->
+    <script src="/assets/js/services/api.js"></script>
+    <script src="/assets/js/services/auth.service.js"></script>
+    <script src="/assets/js/services/admin.service.js"></script>
+    
+    <!-- 页面特定脚本 -->
+    <script src="/assets/js/pages/dashboard/users.js"></script>
+    <script>
+      // 页面初始化
+      $(function(){
+        // 页面加载完成后的初始化逻辑
+        console.log('用户管理页面已加载');
+      });
+    </script>
+  </body>
+</html>

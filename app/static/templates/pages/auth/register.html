@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>用户注册 - 智能问答系统</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/pages/auth.css">
+  </head>
+  <body>
+    <div class="page login-page">
+      <div class="container d-flex align-items-center">
+        <div class="form-holder has-shadow">
+          <div class="row">
+            <!-- Logo & Information Panel-->
+            <div class="col-lg-6">
+              <div class="info d-flex align-items-center">
+                <div class="content">
+                  <div class="logo">
+                    <h1>欢迎注册</h1>
+                  </div>
+                  <p>加入智能学业知识问答系统</p>
+                  <ul class="mt-4">
+                    <li>基于知识图谱的智能问答</li>
+                    <li>实时AI对话体验</li>
+                    <li>个性化学习助手</li>
+                    <li>安全可靠的数据保护</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- Form Panel    -->
+            <div class="col-lg-6 bg-white">
+              <div class="form d-flex align-items-center">
+                <div class="content">
+                  <form method="post" class="form-validate" id="registerForm">
+                    <!-- 成功提示 -->
+                    <div class="alert alert-success" id="successAlert" role="alert">
+                      <span id="successMessage"></span>
+                    </div>
+
+                    <!-- 错误提示 -->
+                    <div class="alert alert-danger" id="errorAlert" role="alert">
+                      <span id="errorMessage"></span>
+                    </div>
+
+                    <div class="form-group">
+                      <input id="register-email" type="email" name="email" required data-msg="请输入有效的邮箱地址" placeholder="邮箱地址" class="input-material">
+                    </div>
+                    <div class="form-group">
+                      <input id="register-password" type="password" name="password" required data-msg="请输入密码" placeholder="密码" class="input-material" minlength="8">
+                      <small class="form-text text-muted">密码长度至少8位</small>
+                    </div>
+                    <div class="form-group">
+                      <input id="register-confirm-password" type="password" name="confirm_password" required data-msg="请确认密码" placeholder="确认密码" class="input-material">
+                    </div>
+                    <div class="form-group">
+                      <select id="register-role" name="role" class="input-material">
+                        <option value="student">学生</option>
+                        <option value="teacher">教师</option>
+                        <option value="admin">管理员</option>
+                      </select>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between">
+                      <button id="registerBtn" type="submit" class="btn btn-primary">
+                        <span class="loading">注册中...</span>
+                        <span class="normal">注册</span>
+                      </button>
+                    </div>
+                  </form>
+                  <br />
+                  <small>已有账号?</small><a href="login.html" class="signup">&nbsp;登录</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- JavaScript files-->
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="/assets/vendor/jquery/jquery.cookie.min.js"></script>
+    <script src="/assets/vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="/assets/vendor/jquery-validation/jquery.validate.min.js"></script>
+    
+    <!-- 核心文件 -->
+    <script src="/assets/js/core/config.js"></script>
+    <script src="/assets/js/core/utils.js"></script>
+    
+    <!-- 服务文件 -->
+    <script src="/assets/js/services/api.js"></script>
+    <script src="/assets/js/services/auth.service.js"></script>
+    
+    <!-- 页面特定脚本 -->
+    <script src="/assets/js/pages/auth/register.js"></script>
+    <script>
+      // 页面初始化
+      $(function(){
+        // 页面加载完成后的初始化逻辑
+        console.log('注册页面已加载');
+      });
+    </script>
+  </body>
+</html>

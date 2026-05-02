@@ -1,0 +1,80 @@
+/* 用户管理页面样式 */
+.alert {
+  display: none;
+  margin-top: 10px;
+}
+
+.loading {
+  display: none;
+}
+
+.user-table {
+  margin-top: 20px;
+}
+
+.logout-btn {
+  float: right;
+  margin-top: 10px;
+}
+
+.user-info {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  border-top: none;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* 搜索框样式 */
+.search-container {
+  margin-bottom: 20px;
+}
+
+.search-input {
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  padding: 8px 15px;
+  width: 300px;
+}
+
+/* 加载动画 */
+.loading-spinner {
+  text-align: center;
+  padding: 20px;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* 表格响应式 */
+.table-responsive {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* 用户状态徽章 */
+.badge {
+  font-size: 0.75rem;
+  padding: 0.375rem 0.75rem;
+}
+
+/* 操作按钮组 */
+.btn-group .btn {
+  margin-right: 5px;
+}
+
+.btn-group .btn:last-child {
+  margin-right: 0;
+}
